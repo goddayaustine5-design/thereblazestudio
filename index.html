@@ -441,20 +441,21 @@
   <p class="lead">Booking a beat, requesting a custom mix, or just want to talk production — reach out.</p>
 
   <div class="contact-grid">
-    <form onsubmit="event.preventDefault(); alert('This is a static demo — connect this form to an email service (e.g. Formspree, EmailJS) to make it functional.');">
+    <form id="contact-form" onsubmit="handleContactSubmit(event)">
       <div>
         <label for="name">Name</label>
-        <input id="name" type="text" placeholder="Your name" required>
+        <input id="name" name="name" type="text" placeholder="Your name" required>
       </div>
       <div>
         <label for="email">Email</label>
-        <input id="email" type="email" placeholder="you@email.com" required>
+        <input id="email" name="email" type="email" placeholder="you@email.com" required>
       </div>
       <div>
         <label for="message">Message</label>
-        <textarea id="message" placeholder="Tell us about the project..." required></textarea>
+        <textarea id="message" name="message" placeholder="Tell us about the project..." required></textarea>
       </div>
-      <button type="submit" class="btn btn-primary" style="margin-top:6px; align-self:flex-start;">Send Message</button>
+      <button type="submit" id="contact-submit-btn" class="btn btn-primary" style="margin-top:6px; align-self:flex-start;">Send Message</button>
+      <p id="contact-form-status" style="font-family:'IBM Plex Mono',monospace; font-size:13px; margin-top:4px; display:none;"></p>
     </form>
 
     <div>
@@ -472,6 +473,44 @@
 <footer>© 2026 THE REBLAZE STUDIO — PRODUCTION HOUSE</footer>
 
 <script>
+  async function handleContactSubmit(event){
+    event.preventDefault();
+    const form = document.getElementById('contact-form');
+    const btn = document.getElementById('contact-submit-btn');
+    const status = document.getElementById('contact-form-status');
+    const originalBtnText = btn.textContent;
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    status.style.display = 'none';
+
+    try{
+      const response = await fetch('https://formspree.io/f/xkodzabj', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
+      });
+
+      if(response.ok){
+        status.textContent = "Message sent — we'll get back to you soon.";
+        status.style.color = 'var(--ember)';
+        status.style.display = 'block';
+        form.reset();
+      } else {
+        status.textContent = "Something went wrong. Please try again or email us directly.";
+        status.style.color = 'var(--blaze)';
+        status.style.display = 'block';
+      }
+    } catch(err){
+      status.textContent = "Something went wrong. Please try again or email us directly.";
+      status.style.color = 'var(--blaze)';
+      status.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalBtnText;
+    }
+  }
+
   function toggleTheme(){
     const root = document.documentElement;
     const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
