@@ -223,6 +223,23 @@
   /* PORTFOLIO */
   .track-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px; margin-top:32px;}
   @media (max-width:700px){.track-grid{grid-template-columns:1fr;}}
+
+  .upload-grid{display:grid; grid-template-columns:1fr; gap:16px; margin-top:24px;}
+  .upload-track{
+    background:var(--paper-raised); border:2px solid var(--ink); border-radius:6px;
+    padding:18px 20px; display:flex; flex-direction:column; gap:10px;
+  }
+  .upload-track .track-title{
+    font-family:'Work Sans',sans-serif; font-weight:700; font-size:15px;
+    text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .upload-track .track-title span{
+    display:block; font-family:'IBM Plex Mono',monospace; font-weight:400;
+    font-size:11px; letter-spacing:1px; color:var(--ink-faint); text-transform:none;
+    margin-top:2px;
+  }
+  .upload-track audio{width:100%; height:38px;}
+  .upload-track audio::-webkit-media-controls-panel{background:var(--paper);}
   .track-embed{
     position:relative;
     background:var(--paper-raised); border:2px solid var(--ink); border-radius:4px;
@@ -387,32 +404,29 @@
 
   <div class="track-grid">
     <div class="track-embed">
-      <!-- Paste your Spotify embed iframe here. In Spotify: Share → Embed track, then drop the <iframe> code below. -->
-      <div class="embed-placeholder">
-        Spotify embed goes here
-        <span class="code-hint">&lt;iframe src="https://open.spotify.com/embed/track/..."&gt;</span>
-      </div>
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/6kdfiY2YAUKkRwGrGoeNYC?utm_source=generator&si=28a2c8e376664df8" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     <div class="track-embed">
-      <div class="embed-placeholder">
-        Spotify embed goes here
-        <span class="code-hint">&lt;iframe src="https://open.spotify.com/embed/track/..."&gt;</span>
-      </div>
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0ip3EtGed84OsFvtuJ3Nus?utm_source=generator&si=b840e15b77c44033" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     <div class="track-embed">
-      <div class="embed-placeholder">
-        Spotify embed goes here
-        <span class="code-hint">&lt;iframe src="https://open.spotify.com/embed/track/..."&gt;</span>
-      </div>
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/3OOYYwAnPyg2a4XPEoP01c?utm_source=generator&si=456dbbf5e6004adb" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     <div class="track-embed">
-      <div class="embed-placeholder">
-        Spotify embed goes here
-        <span class="code-hint">&lt;iframe src="https://open.spotify.com/embed/track/..."&gt;</span>
-      </div>
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/5IyQRhQJ78kY9h6WbQlBJI?utm_source=generator&si=92943fda3f734ba5" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <div class="track-embed">
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6HEAp3v3LklaqxUVW8hVQC?utm_source=generator&si=801f7bdd9bf54ece" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <div class="track-embed">
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4dAUXvgQpAqzujLRQ7QVm7?utm_source=generator&si=cf790e2ca44c42e0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <div class="track-embed">
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6haGsuZQCZ50cdGxSwioCH?utm_source=generator&si=22b536459f1b4977" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </div>
 </section>
+
 
 <!-- BEAT STORE -->
 <section id="store" class="page">
