@@ -265,6 +265,28 @@
   }
   .beat-embed iframe{border-radius:4px; display:block;}
 
+  .pagination{
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    margin-top:36px; flex-wrap:wrap;
+  }
+  .page-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.5px;
+    padding:10px 18px; cursor:pointer; border:2px solid var(--ink);
+    background:var(--paper-raised); color:var(--ink); border-radius:2px;
+    transition:transform .15s;
+  }
+  .page-btn:hover:not(:disabled){transform:translate(-2px,-2px); box-shadow:3px 3px 0 var(--ink);}
+  .page-btn:disabled{opacity:0.35; cursor:not-allowed;}
+  .page-numbers{display:flex; gap:8px;}
+  .page-num{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:500;
+    width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+    border:2px solid var(--ink); background:var(--paper-raised); color:var(--ink);
+    border-radius:50%; cursor:pointer; transition:all .15s;
+  }
+  .page-num:hover{border-color:var(--blaze);}
+  .page-num.active{background:var(--blaze); color:var(--ink); font-weight:700;}
+
   .store-embed{
     background:var(--paper-raised); border:2px solid var(--ink); border-radius:6px;
     padding:24px; margin-top:32px; min-height:420px;
@@ -433,7 +455,7 @@
   <h2>License a beat</h2>
   <p class="lead">Browse and license beats directly — powered by our BeatStars storefront.</p>
 
-  <div class="beat-grid">
+  <div class="beat-grid" id="beatGrid">
     <div class="beat-embed">
       <iframe data-src="https://www.beatstars.com/embed/track?id=25769298" width="100%" height="156" style="border:none;" loading="lazy" title="BeatStars track 25769298"></iframe>
     </div>
@@ -485,6 +507,12 @@
     <div class="beat-embed">
       <iframe data-src="https://www.beatstars.com/embed/track?id=25453273" width="100%" height="156" style="border:none;" loading="lazy" title="BeatStars track 25453273"></iframe>
     </div>
+  </div>
+
+  <div class="pagination" id="beatPagination">
+    <button class="page-btn" id="beatPrev" onclick="changeBeatPage(-1)">&lt; Prev</button>
+    <div class="page-numbers" id="beatPageNumbers"></div>
+    <button class="page-btn" id="beatNext" onclick="changeBeatPage(1)">Next &gt;</button>
   </div>
 
   <div style="text-align:center; margin-top:40px;">
@@ -585,6 +613,49 @@
     }
   })();
 
+  const BEATS_PER_PAGE = 5;
+  let currentBeatPage = 1;
+
+  function renderBeatPage(page){
+    const items = document.querySelectorAll('#beatGrid .beat-embed');
+    const totalPages = Math.ceil(items.length / BEATS_PER_PAGE);
+    currentBeatPage = Math.min(Math.max(page, 1), totalPages);
+
+    items.forEach((el, idx) => {
+      const pageOfItem = Math.floor(idx / BEATS_PER_PAGE) + 1;
+      if(pageOfItem === currentBeatPage){
+        el.style.display = '';
+        const frame = el.querySelector('iframe[data-src]');
+        if(frame){
+          frame.src = frame.getAttribute('data-src');
+          frame.removeAttribute('data-src');
+        }
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    const numbersContainer = document.getElementById('beatPageNumbers');
+    numbersContainer.innerHTML = '';
+    for(let i = 1; i <= totalPages; i++){
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = 'page-num' + (i === currentBeatPage ? ' active' : '');
+      btn.onclick = () => renderBeatPage(i);
+      numbersContainer.appendChild(btn);
+    }
+    document.getElementById('beatPrev').disabled = currentBeatPage === 1;
+    document.getElementById('beatNext').disabled = currentBeatPage === totalPages;
+
+    document.getElementById('store').scrollIntoView({block:'start', behavior:'smooth'});
+  }
+
+  function changeBeatPage(delta){
+    renderBeatPage(currentBeatPage + delta);
+  }
+
+  let beatsInitialized = false;
+
   function showPage(id){
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -592,11 +663,9 @@
     document.querySelector(`.nav-btn[data-page="${id}"]`).classList.add('active');
     window.scrollTo({top:0, behavior:'smooth'});
 
-    if(id === 'store'){
-      document.querySelectorAll('#store iframe[data-src]').forEach(frame => {
-        frame.src = frame.getAttribute('data-src');
-        frame.removeAttribute('data-src');
-      });
+    if(id === 'store' && !beatsInitialized){
+      beatsInitialized = true;
+      renderBeatPage(1);
     }
   }
 </script>
